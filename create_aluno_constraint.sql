@@ -1,72 +1,63 @@
-create table Aluno2 (
-    nr_rgm number(8),
-    nm_nome varchar2(40),
-    nm_pai varchar2(40),
-    nm_mae varchar2(40),
-    dt_nascimento date,
-    id_sexo char(1),
-    constraint aluno2_nr_rgm_pk primary key (nr_rgm),
-    constraint aluno2_nm_nome_ck check (nm_nome is not null),
-    constraint aluno2_nm_pai_ck check (nm_pai is not null),
-    constraint aluno2_dt_nascimento_ck check (dt_nascimento is not null),
-    constraint aluno2_id_sexo_ck check (id_sexo in ('M', 'F'))
+CREATE TABLE Aluno3 (
+    nr_rgm NUMBER(8),
+    nm_nome VARCHAR2(40),
+    nm_pai VARCHAR2(40),
+    nm_mae VARCHAR2(40),
+    dt_nascimento DATE,
+    id_sexo CHAR(1),
+    CONSTRAINT aluno3_nr_rgm_pk PRIMARY KEY (nr_rgm),
+    CONSTRAINT aluno3_nm_nome_ck CHECK (nm_nome IS NOT NULL),
+    CONSTRAINT aluno3_nm_pai_ck CHECK (nm_pai IS NOT NULL),
+    CONSTRAINT aluno3_dt_nascimento_ck CHECK (dt_nascimento IS NOT NULL),
+    CONSTRAINT aluno3_id_sexo_ck CHECK (id_sexo IN ('M', 'F'))
 );
 
-
-
-create table Escola2 (
-    cd_escola number(6),
-    nm_escola varchar2(50),
-    ds_endereco varchar2(50),
-    ds_bairro varchar2(40),
-    constraint escola2_cd_escola_pk primary key (cd_escola),
-    constraint escola2_nm_escola_ck check (nm_escola is not null),
-    constraint escola2_ds_endereco_ck check (ds_endereco is not null),
-    constraint escola2_ds_bairro_ck check (ds_bairro is not null)
+CREATE TABLE Escola3 (
+    cd_escola NUMBER(6),
+    nm_escola VARCHAR2(50),
+    ds_endereco VARCHAR2(50),
+    ds_bairro VARCHAR2(40),
+    CONSTRAINT escola3_cd_escola_pk PRIMARY KEY (cd_escola),
+    CONSTRAINT escola3_nm_escola_ck CHECK (nm_escola IS NOT NULL),
+    CONSTRAINT escola3_ds_endereco_ck CHECK (ds_endereco IS NOT NULL),
+    CONSTRAINT escola3_ds_bairro_ck CHECK (ds_bairro IS NOT NULL)
 );
 
-
-create table Matricula2 (
-    cd_classe number(8),
-    nr_grm number(8),
-    dt_matricula date,
-    constraint matricula2_cd_classe_fk foreign key (cd_classe) references Classe2(cd_classe),
-    constraint matricula2_nr_rgm_fk foreign key (nr_rgm) references Aluno2(nr_rgm),
-    constraint matricula2_dt_matricula_ck check (dt_matricula is not null)
+CREATE TABLE Grau3 (
+    cd_grau NUMBER(2),
+    nm_grau VARCHAR2(50),
+    CONSTRAINT grau3_cd_grau_pk PRIMARY KEY (cd_grau),
+    CONSTRAINT grau3_nm_grau_ck CHECK (nm_grau IS NOT NULL)
 );
 
-
-
-create table Grau2 (
-    cd_grau number(2),
-    nm_grau varchar2(50),
-    constraint grau2_cd_grau_pk primary key (cd_grau),
-    constraint grau2_nm_grau_ck check (nm_grau is not null)
+CREATE TABLE Periodo3 (
+    cd_periodo NUMBER(2),
+    nm_periodo VARCHAR2(50),
+    CONSTRAINT periodo3_cd_periodo_pk PRIMARY KEY (cd_periodo),
+    CONSTRAINT periodo3_nm_periodo_ck CHECK (nm_periodo IS NOT NULL)
 );
 
-
-
-create table Periodo2 (
-    cd_periodo number(2),
-    nm_periodo varchar2(50),
-    constraint periodo2_cd_periodo_pk primary key (cd_periodo),
-    constraint periodo2_nm_periodo_ck check (nm_periodo is not null)
+CREATE TABLE Classe3 (
+    cd_classe NUMBER(8),
+    nr_anoletivo NUMBER(4),
+    cd_escola NUMBER(6),
+    cd_grau NUMBER(2),
+    nr_serie NUMBER(2),
+    sg_turma VARCHAR2(2),
+    cd_periodo NUMBER(2),
+    CONSTRAINT classe3_cd_classe_pk PRIMARY KEY (cd_classe),
+    CONSTRAINT classe3_nr_anoletivo_ck CHECK (nr_anoletivo IS NOT NULL AND nr_anoletivo > 2000),
+    CONSTRAINT classe3_cd_escola_fk FOREIGN KEY (cd_escola) REFERENCES Escola3(cd_escola),
+    CONSTRAINT classe3_cd_grau_fk FOREIGN KEY (cd_grau) REFERENCES Grau3(cd_grau),
+    CONSTRAINT classe3_sg_turma_ck CHECK (sg_turma IS NOT NULL),
+    CONSTRAINT classe3_cd_periodo_fk FOREIGN KEY (cd_periodo) REFERENCES Periodo3(cd_periodo)
 );
 
-
-
-create table Classe2 (
-    cd_classe number(8),
-    nr_anoletivo number(4),
-    cd_escola number(6),
-    cd_grau number(2),
-    nr_serie number(2),
-    sg_turma varchar2(2),
-    cd_periodo number(2),
-    constraint classe2_cd_classe_pk primary key (cd_classe),
-    constraint classe2_nr_anoletivo_ck check (nr_anoletivo is not null AND nr_anoletivo > 2000),
-    constraint classe2_cd_escola_fk foreign key (cd_escola) references Escola(cd_escola),
-    constraint classe2_cd_grau_fk foreign key (cd_grau) references Grau(cd_grau),
-    constraint classe2_sg_turma_ck check (sg_turma is not null),
-    constraint classe2_cd_periodo_fk foreign key (cd_periodo) references Periodo(cd_periodo)
+CREATE TABLE Matricula3 (
+    cd_classe NUMBER(8),
+    nr_rgm NUMBER(8),
+    dt_matricula DATE,
+    CONSTRAINT matricula3_cd_classe_fk FOREIGN KEY (cd_classe) REFERENCES Classe3(cd_classe),
+    CONSTRAINT matricula3_nr_rgm_fk FOREIGN KEY (nr_rgm) REFERENCES Aluno3(nr_rgm),
+    CONSTRAINT matricula3_dt_matricula_ck CHECK (dt_matricula IS NOT NULL)
 );
