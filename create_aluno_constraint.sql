@@ -8,6 +8,7 @@ CREATE TABLE Aluno3 (
     CONSTRAINT aluno3_nr_rgm_pk PRIMARY KEY (nr_rgm),
     CONSTRAINT aluno3_nm_nome_ck CHECK (nm_nome IS NOT NULL),
     CONSTRAINT aluno3_nm_pai_ck CHECK (nm_pai IS NOT NULL),
+    CONSTRAINT aluno3_nm_mae_ck CHECK (nm_mae IS NOT NULL),
     CONSTRAINT aluno3_dt_nascimento_ck CHECK (dt_nascimento IS NOT NULL),
     CONSTRAINT aluno3_id_sexo_ck CHECK (id_sexo IN ('M', 'F'))
 );
@@ -42,13 +43,14 @@ CREATE TABLE Classe3 (
     nr_anoletivo NUMBER(4),
     cd_escola NUMBER(6),
     cd_grau NUMBER(2),
-    nr_serie NUMBER(2),
+    nr_serie VARCHAR2(2),
     sg_turma VARCHAR2(2),
     cd_periodo NUMBER(2),
     CONSTRAINT classe3_cd_classe_pk PRIMARY KEY (cd_classe),
     CONSTRAINT classe3_nr_anoletivo_ck CHECK (nr_anoletivo IS NOT NULL AND nr_anoletivo > 2000),
     CONSTRAINT classe3_cd_escola_fk FOREIGN KEY (cd_escola) REFERENCES Escola3(cd_escola),
     CONSTRAINT classe3_cd_grau_fk FOREIGN KEY (cd_grau) REFERENCES Grau3(cd_grau),
+    CONSTRAINT classe3_nr_serie_ck CHECK (nr_serie IS NOT NULL),
     CONSTRAINT classe3_sg_turma_ck CHECK (sg_turma IS NOT NULL),
     CONSTRAINT classe3_cd_periodo_fk FOREIGN KEY (cd_periodo) REFERENCES Periodo3(cd_periodo)
 );
@@ -57,6 +59,7 @@ CREATE TABLE Matricula3 (
     cd_classe NUMBER(8),
     nr_rgm NUMBER(8),
     dt_matricula DATE,
+    CONSTRAINT matricula3_pk PRIMARY KEY (cd_classe, nr_rgm),
     CONSTRAINT matricula3_cd_classe_fk FOREIGN KEY (cd_classe) REFERENCES Classe3(cd_classe),
     CONSTRAINT matricula3_nr_rgm_fk FOREIGN KEY (nr_rgm) REFERENCES Aluno3(nr_rgm),
     CONSTRAINT matricula3_dt_matricula_ck CHECK (dt_matricula IS NOT NULL)
